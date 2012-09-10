@@ -1,0 +1,26 @@
+{
+    "name": "Gmail Message Focus",
+    "version": "1.0",
+    "manifest_version": 2,
+    "description": "Makes it easy to navigate with the keybard through the links of the messages you are reading on Gmail. When pressing tab with an email message open, the first link of the email message will be focused.",
+    "offline_enabled": true,
+    "permissions": [
+        "http://mail.google.com/*",
+        "https://mail.google.com/*"
+    ],
+    "content_scripts": [{
+        "matches": [
+            "http://mail.google.com/*",
+            "https://mail.google.com/*"
+        ],
+        "js": ["lib/bootstrap.js"],
+        "run_at": "document_end"
+    }],
+    "web_accessible_resources": [
+        "lib/lab.js",
+        "lib/init.js",
+        "lib/core.js",
+        "lib/utils.js",
+        "lib/add-button.js"
+    ]
+}
