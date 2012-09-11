@@ -2,7 +2,7 @@
     "name": "Email Message Focus",
     "version": "1.0.1",
     "manifest_version": 2,
-    "description": "Makes it easy to navigate with the keybard through the links of the messages you are reading on Gmail.",
+    "description": "Makes it easy to navigate with the keyboard through the links of the messages you are reading on Gmail.",
     "offline_enabled": true,
     "permissions": [
         "http://mail.google.com/*",
