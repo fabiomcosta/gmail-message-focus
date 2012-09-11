@@ -20,3 +20,5 @@ do the following to try it out:
 You should notice that the first link is focused, and from that you can navigate to all the links on the email message.
 
 ![https://raw.github.com/fabiomcosta/gmail-message-focus/master/doc/img/email_link_focus.png](https://raw.github.com/fabiomcosta/gmail-message-focus/master/doc/img/email_link_focus.png)
+
+Yeah, I sent an email to myself :flushed:
