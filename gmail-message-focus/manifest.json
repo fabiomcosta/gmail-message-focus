@@ -1,6 +1,6 @@
 {
     "name": "Email Message Focus",
-    "version": "1.0.1",
+    "version": "1.1",
     "manifest_version": 2,
     "description": "Makes it easy to navigate with the keyboard through the links of the messages you are reading on Gmail.",
     "offline_enabled": true,
@@ -15,12 +15,5 @@
         ],
         "js": ["lib/bootstrap.js"],
         "run_at": "document_end"
-    }],
-    "web_accessible_resources": [
-        "lib/lab.js",
-        "lib/init.js",
-        "lib/core.js",
-        "lib/utils.js",
-        "lib/add-button.js"
-    ]
+    }]
 }
