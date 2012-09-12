@@ -10,7 +10,11 @@
         }
 
         var isInboxMessage = function() {
-            return (/^\#inbox\/\w+/).test(location.hash);
+            return (/^#inbox[/]\w+/).test(location.hash);
+        };
+
+        var isSearchMessage = function() {
+            return (/^#search[/][^/]+[/]\w+/).test(location.hash);
         };
 
         var toArray = function(collection) {
@@ -22,7 +26,7 @@
             var doc = canvasFrame.contentDocument;
 
             var setupLinksTabindex = function() {
-                if (isInboxMessage()) {
+                if (isInboxMessage() || isSearchMessage()) {
                     // do not get links from gmail itself
                     var links = toArray(doc.querySelectorAll('[role="main"] a:not([href*=".google.com/"])'));
 
