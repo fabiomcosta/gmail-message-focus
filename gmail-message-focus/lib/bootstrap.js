@@ -1,11 +1,14 @@
 (function(global) {
 
+    var $ = jQuery;
+
     // Only run this script in the top-most frame
     if (top.document === document) {
 
-        var canvasFrame = document.getElementById('canvas_frame');
+        var canvasFrame = $('#canvas_frame'),
+            leaderKey = ',';
 
-        if (!canvasFrame) {
+        if (!canvasFrame.length) {
             return;
         }
 
@@ -23,30 +26,35 @@
 
         var canvasLoaded = function() {
 
-            var doc = canvasFrame.contentDocument;
+            var doc = $(canvasFrame.get(0).contentDocument);
 
             var setupLinksTabindex = function() {
                 if (isInboxMessage() || isSearchMessage()) {
                     // do not get links from gmail itself
-                    var links = toArray(doc.querySelectorAll('[role="main"] a:not([href*=".google.com/"])'));
-
-                    links.forEach(function(link, i) {
-                        link.setAttribute('tabindex', i + 1);
+                    var links = doc.find('[role="main"] a:not([href*=".google.com/"])');
+                    links.attr('tabindex', function(i) {
+                        return i + 1;
                     });
                 }
             };
 
-            window.addEventListener('hashchange', function(e) {
-
+            $(window).on('hashchange', function(e) {
                 setupLinksTabindex();
-
-            }, false);
+            });
 
             setupLinksTabindex();
 
+            // bind keyboardshortcuts
+            Mousetrap.init(doc.get(0));
+
+            // displays current image
+            Mousetrap.bind(leaderKey + ' i', function() {
+                doc.find('[role="main"] :contains("Display images below")').click();
+            });
+
         };
 
-        canvasFrame.addEventListener('load', canvasLoaded, false);
+        canvasFrame.on('load', canvasLoaded);
 
     }
 
