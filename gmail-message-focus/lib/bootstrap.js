@@ -5,12 +5,8 @@
     // Only run this script in the top-most frame
     if (top.document === document) {
 
-        var canvasFrame = $('#canvas_frame'),
-            leaderKey = ',';
-
-        if (!canvasFrame.length) {
-            return;
-        }
+        var leaderKey = ',',
+            doc = $(document);
 
         var isInboxMessage = function() {
             return (/^#inbox[/]\w+/).test(location.hash);
@@ -20,28 +16,29 @@
             return (/^#search[/][^/]+[/]\w+/).test(location.hash);
         };
 
-        var toArray = function(collection) {
-            return Array.prototype.slice.call(collection);
+        var checkExistanceOfElement = function(selector, callback, timeout) {
+            timeout = timeout || 200;
+            var el = $(selector);
+            if (el.length) {
+                callback(el);
+            } else {
+                setTimeout(checkExistanceOfElement.bind(this, selector, callback, timeout), timeout);
+            }
         };
 
-        var canvasLoaded = function() {
-
-            var doc = $(canvasFrame.get(0).contentDocument);
+        var mainDetected = function(main) {
 
             var setupLinksTabindex = function() {
                 if (isInboxMessage() || isSearchMessage()) {
                     // do not get links from gmail itself
-                    var links = doc.find('[role="main"] a:not([href*=".google.com/"])');
+                    var links = main.find('a:not([href*=".google.com/"])');
                     links.attr('tabindex', function(i) {
                         return i + 1;
                     });
                 }
             };
 
-            $(window).on('hashchange', function(e) {
-                setupLinksTabindex();
-            });
-
+            $(window).on('hashchange', setupLinksTabindex);
             setupLinksTabindex();
 
             // bind keyboardshortcuts
@@ -49,12 +46,12 @@
 
             // displays current image
             Mousetrap.bind(leaderKey + ' i', function() {
-                doc.find('[role="main"] :contains("Display images below")').click();
+                main.find(':contains("Display images below")').click();
             });
 
         };
 
-        canvasFrame.on('load', canvasLoaded);
+        checkExistanceOfElement('[role="main"]', mainDetected);
 
     }
 
