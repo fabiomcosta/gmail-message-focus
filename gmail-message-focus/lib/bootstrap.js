@@ -34,7 +34,7 @@
             var setupLinksTabindex = function() {
                 if (isMessagePage()) {
                     // do not get links from gmail itself
-                    var links = doc.find('[role="main"] a:not([href*=".google.com/"])');
+                    var links = doc.find('[role="main"] a:not([href*="mail.google.com/"])');
                     links.attr('tabindex', function(i) {
                         return i + 1;
                     });
