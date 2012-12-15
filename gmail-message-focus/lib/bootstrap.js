@@ -84,22 +84,23 @@
             }
         };
 
+        var setupLinksTabindex = function() {
+            if (isMessagePage()) {
+                // do not get links from gmail itself
+                var links = slice.call(all(selectorLinks));
+
+                links.forEach(function(el, i) {
+                    el.setAttribute('tabindex', 0);
+                });
+                if (links.length) {
+                    links[0].focus();
+                }
+            }
+        };
 
         var mainDetected = function() {
 
-            var setupLinksTabindex = function() {
-                if (isMessagePage()) {
-                    // do not get links from gmail itself
-                    var links = slice.call(all(selectorLinks));
-
-                    links.forEach(function(el, i) {
-                        el.setAttribute('tabindex', 0);
-                    });
-                    if (links.length) {
-                        links[0].focus();
-                    }
-                }
-            };
+            setupLinksTabindex();
 
             doc.on('click', selectorDisplayImages, function() {
                 // checks if all the images on the page contain a src
@@ -117,13 +118,13 @@
             // bind keyboardshortcuts
             Mousetrap.init(document);
 
-            // displays current image
+            // displays current images
             Mousetrap.bind(leaderKey + ' i', function() {
                 $(selectorDisplayImages).click();
             });
 
             // focus first element of the email
-            // /just works on message pages
+            // just works on message pages
             Mousetrap.bind(leaderKey + ' ,', function() {
                 if (isMessagePage()) {
                     var firstLink = one(selectorLinks);
@@ -135,9 +136,16 @@
 
         };
 
+
         var nodeDetector = new NodeInsertDetector();
 
-        nodeDetector.add('[role="main"]', mainDetected);
+        // executes this just at the
+        // first time the `main` element changes
+        checkFor(function() {
+            return one('[role="main"]');
+        }, mainDetected);
+
+        nodeDetector.add('[role="main"]', setupLinksTabindex);
 
         // for any links added after the message has been opened
         nodeDetector.add(selectorLinks, function(e, animEvent, element) {
