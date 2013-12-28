@@ -86,21 +86,33 @@
 
         var setupLinksTabindex = function() {
             if (isMessagePage()) {
-                // do not get links from gmail itself
                 var links = slice.call(all(selectorLinks));
+                var hashLinks = [];
+                var pageLinks = [];
 
-                links.forEach(function(el, i) {
+                links.forEach(function(el) {
+                  if (el.getAttribute('href').indexOf('#') === 0) {
+                    hashLinks.push(el);
+                  } else {
+                    pageLinks.push(el);
+                  }
+                });
+
+                // adds big tabindex so they will be focusable after everything
+                hashLinks.forEach(function(el, i) {
+                    el.setAttribute('tabindex', links.length + i);
+                });
+
+                pageLinks.forEach(function(el) {
                     el.setAttribute('tabindex', 0);
                 });
-                if (links.length) {
-                    links[0].focus();
+                if (pageLinks.length) {
+                    pageLinks[0].focus();
                 }
             }
         };
 
         var mainDetected = function() {
-
-            setupLinksTabindex();
 
             doc.on('click', selectorDisplayImages, function() {
                 // checks if all the images on the page contain a src
