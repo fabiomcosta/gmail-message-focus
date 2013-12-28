@@ -1,8 +1,7 @@
 publish: build
 	open "https://chrome.google.com/webstore/developer/dashboard"
 
-build:
-	@rm -rf build
+build: clean
 	@mkdir -p build
 	@zip -r build/build gmail-message-focus/
 
